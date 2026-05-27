@@ -1,29 +1,29 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Site do Engº Paulo Chacao">
-  <title>Poseidon Comercial</title>
-  <link rel="stylesheet" href="estilo.css">
-</head>
-<body>
-  <header role="banner">
-    <h1>AquaVibes 1.0</h1>
-    <nav>
-      <p>
-        <a href="https://wa.me/5521991061001">
-          WhatsApp (21) 91061001
-        </a>
-      </p>
-    </nav>
-  </header>
-  <main>
-    <figure class="imagem-inferior-esquerda">
-	<a href="AquaVibes_USER.html">
-      <img src="logo_brasil.jpg" alt="Imagem do logo Brasil" aria-label="Logo Brasil">
-	   </a>
-    </figure>
-  </main>
-</body>
-</html>
+<div id="aquavibes-panel">
+    <h2>🌊 AquaVibes - Poseidon</h2>
+    <div id="status-remoto">
+        Temperatura: <span id="rtemp">--</span>°C |
+        pH: <span id="rph">--</span> |
+        Turbidez: <span id="rturb">--</span>% |
+        Nível: <span id="rnivel">--</span>
+    </div>
+    <button onclick="cmdAlimentador()">🍽️ Alimentar</button>
+    <button onclick="cmdAux()">🔧 Auxiliar</button>
+    <button onclick="cmdIlum()">💡 Iluminação</button>
+</div>
+
+<script>
+setInterval(() => {
+    fetch('get_status.php')
+        .then(r => r.json())
+        .then(d => {
+            document.getElementById('rtemp').innerText = d.temp;
+            document.getElementById('rph').innerText = d.ph;
+            document.getElementById('rturb').innerText = d.turbidez;
+            document.getElementById('rnivel').innerText = d.nivel ? 'Normal' : 'MÍNIMO';
+        });
+}, 3000);
+
+function cmdAlimentador() {
+    fetch('send_command.php', {method:'POST', body:'cmd=feed'});
+}
+</script>
